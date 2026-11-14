@@ -28,9 +28,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      - 
       - name: Run source comparison
         run: |
-          python compare_epg_sources.py
+          python compare_epg_sources.py \
+            --master epg_us2_locals_att_roku_us_aliases.xml.gz \
+            --peacock peacock_raw_supplemental.xml.gz \
+            --output epg_source_comparison.csv \
+            --summary epg_source_summary.csv
 
       - name: Upload comparison reports
         if: always()
