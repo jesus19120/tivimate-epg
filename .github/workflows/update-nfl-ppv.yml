@@ -1,0 +1,38 @@
+name: Update NFL PPV EPG
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 */3 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nfl-ppv-epg
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch provider NFL PPV channels
+        env:
+          XTREAM_SERVER: ${{ secrets.XTREAM_SERVER }}
+          XTREAM_USERNAME: ${{ secrets.XTREAM_USERNAME }}
+          XTREAM_PASSWORD: ${{ secrets.XTREAM_PASSWORD }}
+        run: python fetch_xtream_nfl.py
+      - name: Generate NFL guide
+        run: python build_nfl_ppv_dynamic.py nfl_live_channels.json nfl_ppv_live.xml.gz
+      - name: Remove private channel data
+        run: rm -f nfl_live_channels.json
+      - name: Publish NFL guide and matchup state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nfl_ppv_live.xml.gz nfl_ppv_state.json
+          git diff --cached --quiet || (git commit -m "Refresh NFL PPV guide" && git push)
