@@ -1,0 +1,36 @@
+name: Update US FIFA Plus PPV EPG
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fifa-plus-ppv-epg
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch current FIFA Plus channels
+        env:
+          XTREAM_SERVER: ${{ secrets.XTREAM_SERVER }}
+          XTREAM_USERNAME: ${{ secrets.XTREAM_USERNAME }}
+          XTREAM_PASSWORD: ${{ secrets.XTREAM_PASSWORD }}
+        run: python export_fifa_plus_channels.py
+      - name: Build FIFA Plus XMLTV
+        run: python build_fifa_plus_epg.py fifa_plus_channels_export.json fifa_plus_ppv_live.xml.gz
+      - name: Publish FIFA Plus guide
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fifa_plus_ppv_live.xml.gz
+          git diff --cached --quiet || (git commit -m "Refresh US FIFA Plus PPV EPG" && git push)
