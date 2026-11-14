@@ -13,7 +13,7 @@ with open(SOURCE, encoding='utf-8') as file:
 now = datetime.now(timezone.utc)
 root = ET.Element('tv', {'generator-info-name': 'US PPV dynamic Xtream guide'})
 slot_re = re.compile(r'\bUS\s*:\s*SOCCER\s+PPV\s+(\d{1,3})\s*$', re.I)
-date_re = re.compile(r'\b(\d{1,2}[-/]\d{1,2}[-/]\d{4})\s*\|\s*(\d{1,2}:\d{2})\s*(?:\((?:GMT|UTC)\)|GMT|UTC)\b?', re.I)
+
 # Some provider names use '(GMT)' where a word boundary does not follow the closing parenthesis.
 date_re = re.compile(r'(\d{1,2}[-/]\d{1,2}[-/]\d{4})\s*\|\s*(\d{1,2}:\d{2})\s*(?:\((?:GMT|UTC)\)|GMT|UTC)', re.I)
 status_re = re.compile(r'^\s*(LIVE|NEXT|END)\b\s*[:|\-]?\s*', re.I)
