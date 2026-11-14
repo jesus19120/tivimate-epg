@@ -1,0 +1,49 @@
+name: Verify Peacock Programme Schedules
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate candidate matches
+        run: |
+          python compare_epg_sources.py \
+            --master epg_us2_locals_att_roku_us_aliases.xml.gz \
+            --peacock peacock_refresh_readiness_audit.csv \
+            --output epg_source_comparison.csv \
+            --summary epg_source_summary.csv
+          python validate_peacock_candidates.py \
+            --comparison epg_source_comparison.csv \
+            --mapping peacock_refresh_readiness_audit.csv \
+            --output peacock_candidate_review.csv \
+            --summary peacock_candidate_summary.csv
+      - name: Verify programme samples and times
+        run: |
+          python verify_peacock_programmes.py \
+            --review peacock_candidate_review.csv \
+            --samples peacock_programme_samples.csv \
+            --summary peacock_programme_verification.csv \
+            --source-status peacock_source_fetch_status.csv
+      - name: Upload read-only verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peacock-programme-verification
+          path: |
+            peacock_programme_samples.csv
+            peacock_programme_verification.csv
+            peacock_source_fetch_status.csv
+          if-no-files-found: warn
+          retention-days: 14
