@@ -1,0 +1,318 @@
+{
+  "exported_at_utc": "2026-11-14T17:23:53.830947+00:00",
+  "categories": [
+    {
+      "category_name": "US| FIFA+ PPV",
+      "category_id": "1882",
+      "channel_count": 51,
+      "channels": [
+        {
+          "name": "####### FIFA+ PPV #######",
+          "stream_id": 1474583,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | GERMANY U17 VS. LITHUANIA U17 | Sat 14 Nov 05:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 1",
+          "stream_id": 1474582,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | ADDIS KETEMA VS. ARBA MINCH | Sat 14 Nov 05:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 2",
+          "stream_id": 1474581,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | PAMPLEMOUSSES VS. PETITE RIVIÈRE | Sat 14 Nov 06:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 3",
+          "stream_id": 1474580,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | VOLCAN CLUB VS. DJABAL CLUB | Sat 14 Nov 07:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 4",
+          "stream_id": 1474579,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | QƏBƏLƏ İK VS. BAKU JUNIORS | Sat 14 Nov 07:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 5",
+          "stream_id": 1474578,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | LIMAN UFK VS. SUMQAYIT FK | Sat 14 Nov 07:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 6",
+          "stream_id": 1474577,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | KFV PRISHTINA VS. KFF FERONIKELI | Sat 14 Nov 07:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 7",
+          "stream_id": 1474576,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | YEKA VS. SULULTA | Sat 14 Nov 07:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 8",
+          "stream_id": 1474575,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | SONGEA UNITED FC VS. MTIBWA SUGAR FC | Sat 14 Nov 08:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 9",
+          "stream_id": 1474574,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | YIRGA CHEFE VS. BURAYU | Sat 14 Nov 08:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 10",
+          "stream_id": 1474573,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | KITWE UNITED VS. FC LEOPARDS | Sat 14 Nov 08:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 11",
+          "stream_id": 1474572,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | RIVER PLATE ZAMBIA VS. KAFUE CELTIC | Sat 14 Nov 08:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 12",
+          "stream_id": 1474571,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | RAYON SPORTS WFC VS. GAKENKE LADIES | Sat 14 Nov 08:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 13",
+          "stream_id": 1474570,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | FLAMBEAU DU CENTRE VS. RUKINZO | Sat 14 Nov 08:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 14",
+          "stream_id": 1474569,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "ENDED | FC INTER BOM-BOM VS. TRINDADE FC | Sat 14 Nov 09:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 15",
+          "stream_id": 1474568,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | HILAL TEMARA VS. US TOUARGA | Sat 14 Nov 10:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 16",
+          "stream_id": 1474567,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | BUFFLES FC VS. CAVALIERS FC | Sat 14 Nov 10:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 17",
+          "stream_id": 1474566,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | HOMOSHA SHENGA VS. MELKA NONO | Sat 14 Nov 10:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 18",
+          "stream_id": 1474565,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | ASVO FC VS. SOBEMAP FC | Sat 14 Nov 10:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 19",
+          "stream_id": 1474564,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | SAHEL SC VS. WOMBÈYE AC | Sat 14 Nov 10:15 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 20",
+          "stream_id": 1474563,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | AS FAN VS. ASN NIGELEC | Sat 14 Nov 10:15 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 21",
+          "stream_id": 1474562,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | ASF BOBO VS. RÉAL DU FASO | Sat 14 Nov 10:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 22",
+          "stream_id": 1474561,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | US COMOÉ VS. AS DOUANES | Sat 14 Nov 10:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 23",
+          "stream_id": 1474560,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | ASFA YENNENGA VS. SPORTING CASCADES | Sat 14 Nov 10:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 24",
+          "stream_id": 1474559,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | MAJESTIC FC VS. FOCUSPORT FC | Sat 14 Nov 10:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 25",
+          "stream_id": 1474558,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | RC KADIOGO VS. RAHIMO FC | Sat 14 Nov 10:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 26",
+          "stream_id": 1474557,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | 2 PLATEAUX FC VS. SÉWÉ FC | Sat 14 Nov 10:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 27",
+          "stream_id": 1474556,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | CS BAMAKO VS. USFAS BAMAKO | Sat 14 Nov 11:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 28",
+          "stream_id": 1474555,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | AFRIQUE FOOTBALL ÉLITE VS. US BOUGOUBA | Sat 14 Nov 11:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 29",
+          "stream_id": 1474554,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | WUSUM STARS FC VS. PORTS AUTHORITY FC | Sat 14 Nov 11:15 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 30",
+          "stream_id": 1474553,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | BAI BUREH WARRIORS FC VS. EAST END LIONS FC | Sat 14 Nov 11:15 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 31",
+          "stream_id": 1474552,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | BHANTAL FC VS. DIAMOND STARS FC | Sat 14 Nov 11:15 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 32",
+          "stream_id": 1474551,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | WILBERFORCE STRIKERS FC VS. FC KALLON | Sat 14 Nov 11:15 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 33",
+          "stream_id": 1474550,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "LIVE | PORTUGAL U19 VS. GERMANY U19 | Sat 14 Nov 12:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 34",
+          "stream_id": 1474549,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | LEADER SC VS. SC GAGNOA | Sat 14 Nov 13:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 35",
+          "stream_id": 1474548,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | ONZE CRÉATEURS VS. STADE MALIEN | Sat 14 Nov 13:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 36",
+          "stream_id": 1474547,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | RÉAL BAMAKO VS. AS KAYES | Sat 14 Nov 13:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 37",
+          "stream_id": 1474546,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | CORONIE BOYS VS. BROKI | Sat 14 Nov 15:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 38",
+          "stream_id": 1474545,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | VILLA LIONS FC VS. ALL SAINTS UNITED FC | Sat 14 Nov 16:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 39",
+          "stream_id": 1474544,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | BRITANNIA VS. BUBALI | Sat 14 Nov 17:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 40",
+          "stream_id": 1474543,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | WELLINGTON PHOENIX RESERVES VS. SU OTAGO UNIVERSITY | Sat 14 Nov 18:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 41",
+          "stream_id": 1474542,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | PVV VS. ROBINHOOD | Sat 14 Nov 18:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 42",
+          "stream_id": 1474541,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | CASHMERE TECHNICAL VS. WELLINGTON OLYMPIC | Sat 14 Nov 18:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 43",
+          "stream_id": 1474540,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | FORBES SOCCER ACADEMY VS. PROVO UNITED SC | Sat 14 Nov 18:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 44",
+          "stream_id": 1474539,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | NAPIER CITY ROVERS VS. FERRYMEAD BAYS | Sat 14 Nov 19:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 45",
+          "stream_id": 1474538,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | RCA VS. RIVER PLATE ARUBA | Sat 14 Nov 19:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 46",
+          "stream_id": 1474537,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | WEST COAST RANGERS VS. CF WELLINGTON UNITED | Sat 14 Nov 20:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 47",
+          "stream_id": 1474536,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | DEN AMSTEL FC VS. POLICE FC | Sat 14 Nov 20:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 48",
+          "stream_id": 1474535,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | TEACHERS YOUNG STRIKERS VS. BEACHES FC | Sat 14 Nov 20:30 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 49",
+          "stream_id": 1474534,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        },
+        {
+          "name": "NEXT | AUCKLAND UNITED VS. MIRAMAR | Sat 14 Nov 21:00 EST (US) | 8K EXCLUSIVE | US: FIFA+ PPV 50",
+          "stream_id": 1474533,
+          "epg_channel_id": "",
+          "category_id": "1882"
+        }
+      ]
+    }
+  ]
+}
