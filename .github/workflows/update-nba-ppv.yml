@@ -1,0 +1,40 @@
+
+name: Update NBA PPV EPG
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '27 */3 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch provider NBA PPV channels
+        env:
+          XTREAM_SERVER: ${{ secrets.XTREAM_SERVER }}
+          XTREAM_USERNAME: ${{ secrets.XTREAM_USERNAME }}
+          XTREAM_PASSWORD: ${{ secrets.XTREAM_PASSWORD }}
+        run: python fetch_xtream_nba.py
+
+      - name: Generate NBA guide
+        run: python build_nba_ppv_dynamic.py nba_live_channels.json nba_ppv_live.xml.gz
+
+      - name: Remove private channel data
+        run: rm -f nba_live_channels.json
+
+      - name: Publish NBA guide
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nba_ppv_live.xml.gz
+          git diff --cached --quiet || (git commit -m "Refresh NBA PPV guide" && git push)
