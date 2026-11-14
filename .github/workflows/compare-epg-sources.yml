@@ -32,7 +32,7 @@ jobs:
         run: |
           python compare_epg_sources.py \
             --master epg_us2_locals_att_roku_us_aliases.xml.gz \
-            --peacock peacock_raw_supplemental.xml.gz \
+           --peacock peacock_refresh_readiness_audit.csv \
             --output epg_source_comparison.csv \
             --summary epg_source_summary.csv
 
