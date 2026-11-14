@@ -1,0 +1,47 @@
+name: Validate Peacock EPG Candidates
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 5 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compare source feeds
+        run: |
+          python compare_epg_sources.py \
+            --master epg_us2_locals_att_roku_us_aliases.xml.gz \
+            --peacock peacock_refresh_readiness_audit.csv \
+            --output epg_source_comparison.csv \
+            --summary epg_source_summary.csv
+      - name: Generate Peacock candidate review
+        run: |
+          python validate_peacock_candidates.py \
+            --comparison epg_source_comparison.csv \
+            --mapping peacock_refresh_readiness_audit.csv \
+            --output peacock_candidate_review.csv \
+            --summary peacock_candidate_summary.csv
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peacock-validation-reports
+          path: |
+            epg_source_comparison.csv
+            epg_source_summary.csv
+            peacock_candidate_review.csv
+            peacock_candidate_summary.csv
+          if-no-files-found: warn
+          retention-days: 14
