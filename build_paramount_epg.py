@@ -1,43 +1,139 @@
-import argparse,datetime as dt,gzip,json,re,xml.etree.ElementTree as ET
+import argparse
+import datetime as dt
+import gzip
+import json
+import re
+import xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
-E=ZoneInfo('America/New_York')
-SLOT=re.compile(r'PARAMOUNT\+\s*(?:PPV\s*)?(\d+)\b',re.I)
-TIME=re.compile(r'\b(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+)?(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}):(\d{2})\s*(EST|EDT|ET)?\b',re.I)
-def xmltime(d):return d.astimezone(dt.timezone.utc).strftime('%Y%m%d%H%M%S +0000')
-def add(tv,cid,a,b,title):
- if b<=a:return
- p=ET.SubElement(tv,'programme',{'channel':cid,'start':xmltime(a),'stop':xmltime(b)})
- ET.SubElement(p,'title',{'lang':'en'}).text=title
- ET.SubElement(p,'desc',{'lang':'en'}).text='Status estimated from scheduled time, not verified live result.'
+
+EASTERN = ZoneInfo("America/New_York")
+
+TIME_RE = re.compile(
+    r"\b(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+)?"
+    r"(\d{1,2})\s+([A-Za-z]{3})\s+"
+    r"(\d{1,2}):(\d{2})\s*(EST|EDT|ET)?\b",
+    re.IGNORECASE,
+)
+
+SLOT_RE = re.compile(r"PARAMOUNT\+?\s*(?:PPV)?\s*0*(\d+)", re.I)
+
+def xmltime(value):
+    return value.strftime("%Y%m%d%H%M%S %z")
+
+def add_programme(tv, channel_id, start, end, title):
+    programme = ET.SubElement(tv, "programme", {
+        "channel": channel_id,
+        "start": xmltime(start),
+        "stop": xmltime(end),
+    })
+    ET.SubElement(programme, "title", {"lang": "en"}).text = title
+
 def main():
- p=argparse.ArgumentParser();p.add_argument('source');p.add_argument('output');p.add_argument('--event-hours',type=float,default=3);p.add_argument('--pre-hours',type=float,default=3);p.add_argument('--post-hours',type=float,default=2);a=p.parse_args()
- data=json.load(open(a.source,encoding='utf8'));cats=[c for c in data['categories'] if str(c.get('category_id'))=='1038' and 'PARAMOUNT' in c.get('category_name','').upper() and 'PPV' in c.get('category_name','').upper()]
- if len(cats)!=1:raise ValueError('Paramount PPV category 1038 not uniquely found')
- now=dt.datetime.now(E);tv=ET.Element('tv',{'generator-info-name':'Paramount PPV scheduled-status guide'});count=0;seen=set()
- for ch in cats[0]['channels']:
-  name=str(ch.get('name',''));slot=SLOT.search(name);sid=ch.get('stream_id')
-  if not slot or sid is None or sid in seen:continue
-  seen.add(sid);cid='paramount-plus-ppv-'+str(sid)
-  node=ET.SubElement(tv,'channel',{'id':cid});ET.SubElement(node,'display-name').text='US: PARAMOUNT+ PPV '+slot.group(1);ET.SubElement(node,'display-name').text=name
-  m=TIME.search(name)
-  if not m:continue
-  weekday,day,month,hour,minute,zone=m.groups();month=dt.datetime.strptime(month.title(),'%b').month
-  candidates=[]
-  for year in (now.year-1,now.year,now.year+1):
-   try:d=dt.datetime(year,month,int(day),int(hour),int(minute),tzinfo=E)
-   except ValueError:continue
-   if weekday and d.strftime('%a').lower()!=weekday.lower():continue
-   if zone and zone.upper() in ('EST','EDT') and d.utcoffset()!=dt.timedelta(hours=-5 if zone.upper()=='EST' else -4):continue
-   candidates.append(d)
-  if not candidates:continue
-  start=min(candidates,key=lambda d:abs((d-now).total_seconds()));title=name[:m.start()].strip(' |:-');title=re.sub(r'^(?:LIVE|NEXT|ENDED|UPCOMING)\s*\|\s*','',title,flags=re.I)
-  if not title or title.startswith('#'):continue
-  end=start+dt.timedelta(hours=a.event_hours)
-  add(tv,cid,start-dt.timedelta(hours=a.pre_hours),start,'UPCOMING | '+title)
-  add(tv,cid,start,end,'LIVE | '+title)
-  add(tv,cid,end,end+dt.timedelta(hours=a.post_hours),'ENDED | '+title)
-  count+=1
- if not count:raise ValueError('No event names/times parsed: refusing to publish empty guide')
- with gzip.open(a.output,'wb') as f:f.write(ET.tostring(tv,encoding='utf8',xml_declaration=True))
- print('Built',count,'events across',len(seen),'channels')
-if __name__=='__main__':main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source")
+    parser.add_argument("output")
+    parser.add_argument("--pre-hours", type=float, default=1)
+    parser.add_argument("--event-hours", type=float, default=3)
+    parser.add_argument("--post-hours", type=float, default=1)
+    args = parser.parse_args()
+
+    with open(args.source, encoding="utf-8") as f:
+        data = json.load(f)
+
+    categories = data.get("categories", [])
+    if len(categories) != 1:
+        raise ValueError("Expected exactly one Paramount category")
+
+    channels = categories[0].get("channels", [])
+    if not channels:
+        raise ValueError("No Paramount channels found")
+
+    tv = ET.Element("tv", {"generator-info-name": "Paramount PPV EPG"})
+    now = dt.datetime.now(EASTERN)
+    channel_count = 0
+    event_count = 0
+    seen = set()
+
+    for channel in channels:
+        name = str(channel.get("name", "")).strip()
+        stream_id = channel.get("stream_id")
+
+        if stream_id is None:
+            continue
+
+        stream_id = str(stream_id)
+        if stream_id in seen:
+            continue
+        seen.add(stream_id)
+
+        channel_id = "paramount-plus-ppv-" + stream_id
+
+        node = ET.SubElement(tv, "channel", {"id": channel_id})
+        ET.SubElement(node, "display-name").text = name or ("Paramount+ " + stream_id)
+        channel_count += 1
+
+        match = TIME_RE.search(name)
+        if not match:
+            continue
+
+        weekday, day, month, hour, minute, zone = match.groups()
+        candidates = []
+
+        for year in (now.year - 1, now.year, now.year + 1):
+            try:
+                event_date = dt.datetime.strptime(
+                    f"{year} {month} {day} {hour}:{minute}",
+                    "%Y %b %d %H:%M",
+                ).replace(tzinfo=EASTERN)
+            except ValueError:
+                continue
+
+            if weekday and event_date.strftime("%a").lower() != weekday.lower():
+                continue
+
+            if zone and event_date.strftime("%Z").upper() != zone.upper():
+                continue
+
+            candidates.append(event_date)
+
+        if not candidates:
+            continue
+
+        start = min(candidates, key=lambda d: abs((d - now).total_seconds()))
+        title = name[:match.start()].strip(" -|:")
+        if not title:
+            continue
+
+        add_programme(
+            tv, channel_id,
+            start - dt.timedelta(hours=args.pre_hours),
+            start, "Upcoming: " + title
+        )
+        add_programme(
+            tv, channel_id,
+            start,
+            start + dt.timedelta(hours=args.event_hours),
+            title
+        )
+        add_programme(
+            tv, channel_id,
+            start + dt.timedelta(hours=args.event_hours),
+            start + dt.timedelta(hours=args.event_hours + args.post_hours),
+            "Event ended: " + title
+        )
+        event_count += 1
+
+    if not channel_count:
+        raise ValueError("No valid channels to publish")
+
+    xml_data = ET.tostring(tv, encoding="utf-8", xml_declaration=True)
+
+    with gzip.open(args.output, "wb") as f:
+        f.write(xml_data)
+
+    print(f"Built {channel_count} channels and {event_count} scheduled events")
+    if event_count == 0:
+        print("NOTICE: No event times found; publishing channel-only guide")
+
+if __name__ == "__main__":
+    main()
