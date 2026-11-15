@@ -1,0 +1,34 @@
+name: Update Paramount Plus PPV EPG
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '27 * * * *'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch Paramount PPV titles
+        env:
+          XTREAM_SERVER: ${{ secrets.XTREAM_SERVER }}
+          XTREAM_USERNAME: ${{ secrets.XTREAM_USERNAME }}
+          XTREAM_PASSWORD: ${{ secrets.XTREAM_PASSWORD }}
+        run: python export_paramount_channels.py
+      - name: Build guide
+        run: python build_paramount_epg.py paramount_channels_export.json paramount_ppv_live.xml.gz
+      - name: Delete private export
+        run: rm -f paramount_channels_export.json
+      - name: Publish only Paramount guide
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add paramount_ppv_live.xml.gz
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh Paramount PPV EPG"
+            git push
+          fi
