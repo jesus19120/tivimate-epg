@@ -1,0 +1,72 @@
+name: Update US STAN PPV EPG
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */3 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-stan-epg
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Discover latest STAN channels
+        env:
+          XTREAM_SERVER: ${{ secrets.XTREAM_SERVER }}
+          XTREAM_USERNAME: ${{ secrets.XTREAM_USERNAME }}
+          XTREAM_PASSWORD: ${{ secrets.XTREAM_PASSWORD }}
+        run: python discover_stan_channels.py
+
+      - name: Build STAN EPG
+        run: python build_stan_epg.py
+
+      - name: Validate generated EPG
+        run: |
+          python - <<'PY'
+          import gzip
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          path = Path("stan_ppv_live.xml.gz")
+          if not path.is_file():
+              raise SystemExit("EPG output file missing")
+
+          with gzip.open(path, "rb") as f:
+              root = ET.parse(f).getroot()
+
+          channels = root.findall("channel")
+          programmes = root.findall("programme")
+          print(f"Channels: {len(channels)}")
+          print(f"Programmes: {len(programmes)}")
+
+          if not channels or not programmes:
+              raise SystemExit("EPG contains no channels or programmes")
+          PY
+
+      - name: Commit updated STAN EPG
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stan_ppv_live.xml.gz
+          if git diff --cached --quiet; then
+            echo "No EPG changes to commit"
+          else
+            git commit -m "Update STAN PPV EPG"
+            git push
+          fi
