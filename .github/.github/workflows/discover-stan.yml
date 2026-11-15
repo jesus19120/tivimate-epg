@@ -1,0 +1,29 @@
+name: Discover US STAN Channels
+
+on:
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Discover STAN channels
+        env:
+          XTREAM_SERVER: ${{ secrets.XTREAM_SERVER }}
+          XTREAM_USERNAME: ${{ secrets.XTREAM_USERNAME }}
+          XTREAM_PASSWORD: ${{ secrets.XTREAM_PASSWORD }}
+        run: python discover_stan_channels.py
+
+      - name: Upload STAN channel mapping
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stan-channel-mapping
+          path: stan_channels_export.json
+          if-no-files-found: warn
+          retention-days: 7
