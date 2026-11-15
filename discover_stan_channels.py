@@ -81,4 +81,4 @@ for category in matches:
                 indent=2
             )
 
-        print(f"Exported {len(channels)} US | STAN channels
+                print(f"Exported {len(channels)} US | STAN channels")
