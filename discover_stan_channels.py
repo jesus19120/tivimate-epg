@@ -62,7 +62,7 @@ for category in matches:
             {
                 "name": str(stream.get("name", "")),
                 "stream_id": stream.get("stream_id")
-            }
+            }i
             for stream in streams
             if stream.get("stream_id") is not None
         ]
@@ -80,5 +80,5 @@ for category in matches:
                 ensure_ascii=False,
                 indent=2
             )
-
                 print(f"Exported {len(channels)} US | STAN channels")
+print(f"Exported {len(channels)} US | STAN channels")
