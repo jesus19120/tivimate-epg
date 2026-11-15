@@ -4,6 +4,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+CATEGORY_ID = "1983"
+
 server = os.environ["XTREAM_SERVER"].strip().rstrip("/")
 if not server.startswith(("http://", "https://")):
     server = "http://" + server
@@ -11,16 +13,19 @@ if not server.startswith(("http://", "https://")):
 username = os.environ["XTREAM_USERNAME"]
 password = os.environ["XTREAM_PASSWORD"]
 
+
 def fetch(action, category_id=None):
     params = {
         "username": username,
         "password": password,
         "action": action,
     }
+
     if category_id is not None:
         params["category_id"] = str(category_id)
 
     url = server + "/player_api.php?" + urllib.parse.urlencode(params)
+
     request = urllib.request.Request(
         url,
         headers={"User-Agent": "Mozilla/5.0 EPG-Category-Export/1.0"},
@@ -36,58 +41,54 @@ def fetch(action, category_id=None):
 
     if not isinstance(data, list):
         raise ValueError(f"Unexpected response for {action}")
+
     return data
+
 
 categories = fetch("get_live_categories")
 
 matches = [
     category
     for category in categories
-    if "STAN" in str(category.get("category_name", "")).upper()
+    if str(category.get("category_id")) == CATEGORY_ID
+    and "STAN PPV" in str(category.get("category_name", "")).upper()
+    and str(category.get("category_name", "")).strip().upper().startswith("US")
 ]
 
-if not matches:
-    raise SystemExit("No STAN categories found")
+if len(matches) != 1:
+    raise SystemExit("US STAN PPV category 1983 not found")
 
-found_target = False
+category = matches[0]
+category_name = str(category.get("category_name", ""))
 
-for category in matches:
-    category_id = str(category["category_id"])
-    category_name = str(category.get("category_name", ""))
-    streams = fetch("get_live_streams", category_id)
+streams = fetch("get_live_streams", CATEGORY_ID)
 
-    print(f"Category: {category_name}")
-    print(f"Category ID: {category_id}")
-    print(f"Channel count: {len(streams)}")
+channels = [
+    {
+        "name": str(stream.get("name", "")),
+        "stream_id": stream.get("stream_id"),
+    }
+    for stream in streams
+    if stream.get("stream_id") is not None
+]
 
-    if category_name.strip().upper() == "US | STAN":
-        found_target = True
-        channels = [
-            {
-                "name": str(stream.get("name", "")),
-                "stream_id": stream.get("stream_id"),
-            }
-            for stream in streams
-            if stream.get("stream_id") is not None
-        ]
+if not channels:
+    raise SystemExit("No valid US STAN PPV channels found")
 
-        if not channels:
-            raise SystemExit("US | STAN has no valid channels")
-
-        output = {
-            "categories": [
-                {
-                    "category_id": category_id,
-                    "category_name": category_name,
-                    "channels": channels,
-                }
-            ]
+output = {
+    "categories": [
+        {
+            "category_id": CATEGORY_ID,
+            "category_name": category_name,
+            "channels": channels,
         }
+    ]
+}
 
-        with open("stan_channels_export.json", "w", encoding="utf-8") as file:
-            json.dump(output, file, ensure_ascii=False, indent=2)
+with open("stan_channels_export.json", "w", encoding="utf-8") as file:
+    json.dump(output, file, ensure_ascii=False, indent=2)
 
-        print(f"Exported {len(channels)} US | STAN channels")
-
-if not found_target:
-    raise SystemExit("Exact US | STAN category not found")
+print(f"Category: {category_name}")
+print(f"Category ID: {CATEGORY_ID}")
+print(f"Channel count: {len(channels)}")
+print("STAN channel discovery completed successfully")
