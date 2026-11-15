@@ -1,8 +1,8 @@
-import os
 import json
-import urllib.request
-import urllib.parse
+import os
 import urllib.error
+import urllib.parse
+import urllib.request
 
 server = os.environ["XTREAM_SERVER"].strip().rstrip("/")
 if not server.startswith(("http://", "https://")):
@@ -15,7 +15,7 @@ def fetch(action, category_id=None):
     params = {
         "username": username,
         "password": password,
-        "action": action
+        "action": action,
     }
     if category_id is not None:
         params["category_id"] = str(category_id)
@@ -23,7 +23,7 @@ def fetch(action, category_id=None):
     url = server + "/player_api.php?" + urllib.parse.urlencode(params)
     request = urllib.request.Request(
         url,
-        headers={"User-Agent": "Mozilla/5.0 EPG-Category-Export/1.0"}
+        headers={"User-Agent": "Mozilla/5.0 EPG-Category-Export/1.0"},
     )
 
     try:
@@ -41,12 +41,15 @@ def fetch(action, category_id=None):
 categories = fetch("get_live_categories")
 
 matches = [
-    category for category in categories
+    category
+    for category in categories
     if "STAN" in str(category.get("category_name", "")).upper()
 ]
 
 if not matches:
     raise SystemExit("No STAN categories found")
+
+found_target = False
 
 for category in matches:
     category_id = str(category["category_id"])
@@ -58,27 +61,33 @@ for category in matches:
     print(f"Channel count: {len(streams)}")
 
     if category_name.strip().upper() == "US | STAN":
+        found_target = True
         channels = [
             {
                 "name": str(stream.get("name", "")),
-                "stream_id": stream.get("stream_id")
-            }i
+                "stream_id": stream.get("stream_id"),
+            }
             for stream in streams
             if stream.get("stream_id") is not None
         ]
 
-        with open("stan_channels_export.json", "w", encoding="utf-8") as file:
-            json.dump(
+        if not channels:
+            raise SystemExit("US | STAN has no valid channels")
+
+        output = {
+            "categories": [
                 {
-                    "categories": [{
-                        "category_id": category_id,
-                        "category_name": category_name,
-                        "channels": channels
-                    }]
-                },
-                file,
-                ensure_ascii=False,
-                indent=2
-            )
-                print(f"Exported {len(channels)} US | STAN channels")
-print(f"Exported {len(channels)} US | STAN channels")
+                    "category_id": category_id,
+                    "category_name": category_name,
+                    "channels": channels,
+                }
+            ]
+        }
+
+        with open("stan_channels_export.json", "w", encoding="utf-8") as file:
+            json.dump(output, file, ensure_ascii=False, indent=2)
+
+        print(f"Exported {len(channels)} US | STAN channels")
+
+if not found_target:
+    raise SystemExit("Exact US | STAN category not found")
